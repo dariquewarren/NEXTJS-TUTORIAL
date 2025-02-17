@@ -45,9 +45,11 @@ export async function createInvoice(prevState: State, formData: FormData){
           message: 'Missing Fields. Failed to Create Invoice.',
         };
       }
+      const { customerId, amount, status } = validatedFields.data;
    const amountInCents = amount * 100;
    const date = new Date().toISOString().split('T')[0];
-try {
+
+       try {
     await sql `
     INSERT INTO invoices (customer_id, amount,status, date)
     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})`
@@ -56,8 +58,8 @@ try {
 } catch (error) {
     console.log(`error found: ${error}`)
 }
-  revalidatePath('/dashboard/invoices');
-    redirect('/dashboard/invoices');
+revalidatePath('/dashboard/invoices');
+redirect('/dashboard/invoices');
 
    
 }
